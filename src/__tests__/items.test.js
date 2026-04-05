@@ -155,11 +155,12 @@ test('PUT /items/:id returns HTTP 404 for an unknown id', async () => {
 
 // --- DELETE /items/:id ------------------------------------------------------
 
-test('DELETE /items/:id returns HTTP 204 and removes the item', async () => {
+test('DELETE /items/:id returns HTTP 204 with no body and removes the item', async () => {
   const created = store.create({ name: 'Iota' });
 
-  const { statusCode } = await del(`/items/${created.id}`);
+  const { statusCode, body } = await del(`/items/${created.id}`);
   assert.equal(statusCode, 204);
+  assert.equal(body, '', 'response body must be empty for 204 No Content');
 
   // Confirm removal via GET
   const { statusCode: getStatus } = await get(`/items/${created.id}`);
